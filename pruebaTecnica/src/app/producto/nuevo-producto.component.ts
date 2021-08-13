@@ -23,11 +23,12 @@ export class NuevoProductoComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  //Crear producto
   onCreate(): void{
     const producto = new Producto(this.nombre, this.precio);
     this.productoService.save(producto).subscribe(
       data => {
-        this.toastr.success('Producto creado exitosamente', 'Ok',{
+        this.toastr.success('Producto creado exitosamente', 'Exito',{
           timeOut:3000
         });
         this.router.navigate(['/'])
@@ -36,7 +37,7 @@ export class NuevoProductoComponent implements OnInit {
         this.toastr.error(err.error.mensaje, 'Error',{
           timeOut:3000
         });
-        this.router.navigate(['/']);
+        this.router.navigate(['/nuevo']);
       }
     )
   }

@@ -21,6 +21,7 @@ export class ListaProductoComponent implements OnInit {
     this.cargarProducto();
   }
 
+  //Cargar lista de productos
   cargarProducto(): void{
     this.productoService.lista().subscribe(
       data => {
@@ -32,10 +33,12 @@ export class ListaProductoComponent implements OnInit {
     );
   }
 
+
+  //Borrar producto
   borrar(id: number){
     this.productoService.delete(id).subscribe(
       data => {
-        this.toastr.success('Producto Eliminado', 'Ok',{
+        this.toastr.success('Producto Eliminado', 'Exito',{
           timeOut:3000
         });
         this.cargarProducto();
