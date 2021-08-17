@@ -17,7 +17,6 @@ public class ProductoRequest {
     }
     
     //Getters and Setters
-
     public String getNombre() {
         return nombre;
     }

@@ -6,8 +6,7 @@ import com.bankvision.backend.services.ProductoService;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,6 +20,7 @@ public class ProductoController {
     @GetMapping("/lista")
     public ResponseEntity<List<Producto>> list(){
         List<Producto> list = productoService.list();
+        
         return new ResponseEntity<List<Producto>>(list, HttpStatus.OK);
     }
     
@@ -29,7 +29,7 @@ public class ProductoController {
     public ResponseEntity<Producto> getById(@PathVariable("id") int id){
         //validar existencia
         if (!productoService.existById(id)){
-            return new ResponseEntity(new Mensaje("No existe"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new Mensaje("El producto no existe"), HttpStatus.NOT_FOUND);
         }
         
         Producto producto = productoService.getOne(id).get();
@@ -41,7 +41,7 @@ public class ProductoController {
     public ResponseEntity<Producto> getById(@PathVariable("nombre") String nombre){
         //validar si existe
         if (!productoService.existByNombre(nombre)){
-            return new ResponseEntity(new Mensaje("No existe"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new Mensaje("El producto no existe"), HttpStatus.NOT_FOUND);
         }
         
         Producto producto = productoService.getByNombre(nombre).get();
@@ -56,7 +56,7 @@ public class ProductoController {
         if(StringUtils.isBlank(productoRequest.getNombre())){
             return new ResponseEntity(new Mensaje("El nombre es obligatorio"), HttpStatus.BAD_REQUEST);
         }else if(productoRequest.getPrecio() == null || productoRequest.getPrecio() < 0){
-            return new ResponseEntity(new Mensaje("El precio tiene que se mayor a 0"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new Mensaje("El precio tiene que ser mayor a 0"), HttpStatus.BAD_REQUEST);
         }else if(productoService.existByNombre(productoRequest.getNombre())){
             return new ResponseEntity(new Mensaje("Ese nombre ya existe"), HttpStatus.BAD_REQUEST);
         }
@@ -64,7 +64,7 @@ public class ProductoController {
         //creacion producto
         Producto producto = new Producto(productoRequest.getNombre(), productoRequest.getPrecio());
         productoService.save(producto);
-        return new ResponseEntity(new Mensaje("Producto creado exitosamente"), HttpStatus.OK);
+        return new ResponseEntity(new Mensaje("Producto creado."), HttpStatus.OK);
     }    
     
     
@@ -78,7 +78,7 @@ public class ProductoController {
         if(StringUtils.isBlank(productoRequest.getNombre())){
             return new ResponseEntity(new Mensaje("El nombre es obligatorio"), HttpStatus.BAD_REQUEST);
         }else if(productoRequest.getPrecio() == null ||  productoRequest.getPrecio() < 0){
-            return new ResponseEntity(new Mensaje("El precio tiene que se mayor a 0"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new Mensaje("El precio tiene que ser mayor a 0"), HttpStatus.BAD_REQUEST);
         }else if(productoService.existByNombre(productoRequest.getNombre()) && productoService.getByNombre(productoRequest.getNombre()).get().getId() != id){
             return new ResponseEntity(new Mensaje("Ese nombre ya existe"), HttpStatus.BAD_REQUEST);
         }
@@ -87,18 +87,18 @@ public class ProductoController {
         producto.setNombre(productoRequest.getNombre());
         producto.setPrecio(productoRequest.getPrecio());
         productoService.save(producto);
-        return new ResponseEntity(new Mensaje("Producto actualizado exitosamente"), HttpStatus.OK);
+        return new ResponseEntity(new Mensaje("Producto actualizado."), HttpStatus.OK);
     }  
     
     //eliminar producto
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id")int id){
+    public ResponseEntity<Integer> delete(@PathVariable("id")int id){
         if (!productoService.existById(id)){
-           return new ResponseEntity(new Mensaje("El producto no existe"), HttpStatus.NOT_FOUND);
+           return new ResponseEntity(new Mensaje("El producto no existe."), HttpStatus.NOT_FOUND);
         }
         
         productoService.delete(id);
-        return new ResponseEntity(new Mensaje("Producto eliminado exitosamente"), HttpStatus.OK);
+        return new ResponseEntity(new Mensaje("Producto eliminado."), HttpStatus.OK);
     }
 }
 

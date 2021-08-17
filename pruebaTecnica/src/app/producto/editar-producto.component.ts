@@ -19,9 +19,12 @@ export class EditarProductoComponent implements OnInit {
     private router: Router
   ) { }
 
+  ngOnInit(): void {
+    this.getData();
+  }
 
   //Cargar info del producto
-  ngOnInit(): void {
+  getData(): void{
     const id = this.activatedRoute.snapshot.params.id;
     this.productoService.detail(id).subscribe(
       data=>{
@@ -41,7 +44,7 @@ export class EditarProductoComponent implements OnInit {
     const id = this.activatedRoute.snapshot.params.id;
     this.productoService.update(id, this.producto).subscribe(
       data => {
-        this.toaster.success('Producto actualizado', 'Exito',{
+        this.toaster.success(data.mensaje, 'Exito',{
           timeOut:3000
         });
         this.router.navigate(['/'])

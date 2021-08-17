@@ -28,7 +28,9 @@ export class ListaProductoComponent implements OnInit {
         this.productos = data;
       },
       err => {
-        console.log(err);
+        this.toastr.warning("Error al cargar los productos", 'Error',{
+          timeOut:3000
+        });
       }
     );
   }
@@ -38,7 +40,7 @@ export class ListaProductoComponent implements OnInit {
   borrar(id: number){
     this.productoService.delete(id).subscribe(
       data => {
-        this.toastr.success('Producto Eliminado', 'Exito',{
+        this.toastr.success(data.mensaje, 'Exito',{
           timeOut:3000
         });
         this.cargarProducto();
